@@ -26,7 +26,7 @@ function addBridges(map){
     
     map.addSource('bridges', {
         type: 'geojson',
-        data: 'bridges.geojson'
+        data: 'https://owenineson.github.io/ManchesterBridges/bridges.geojson'
     });
 
     map.addLayer({
