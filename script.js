@@ -20,6 +20,7 @@ map.on('load', () => {
         'paint': {
             'line-color': '#c23232'
             'line-width': 4
+            }
         }
     });
 
