@@ -18,10 +18,9 @@ map.on('load', () => {
         'type': 'line',
         'source': 'bridges',
         'paint': {
-            'line-color': '#c23232'
+            'line-color': '#c23232',
             'line-width': 4
-            }
-        }
+        },
     });
 
     map.on('click', 'bridges', (e) => {
