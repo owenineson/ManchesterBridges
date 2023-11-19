@@ -10,7 +10,7 @@ const map = new mapboxgl.Map({
 map.on('load', () => {
     map.addSource('bridges', {
         type: 'geojson',
-        data: 'bridges.geojson'
+        data: 'https://owenineson.github.io/ManchesterBridges/bridges.geojson',
     });
 
     map.addLayer({
@@ -18,7 +18,7 @@ map.on('load', () => {
         'type': 'line',
         'source': 'bridges',
         'paint': {
-            'line-color': '#c23232',
+            'line-color': '#FF0000',
             'line-width': 4
         },
     });
@@ -26,7 +26,7 @@ map.on('load', () => {
     map.on('click', 'bridges', (e) => {
         // Copy coordinates array.
         const coordinates = e.features[0].geometry.coordinates.slice();
-        const description = e.features[0].properties['@id'];
+        const description = JSON.stringify(e.features[0].properties);
          
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
@@ -36,18 +36,18 @@ map.on('load', () => {
         }
          
         new mapboxgl.Popup()
-            .setLngLat(coordinates)
+            .setLngLat(e.lngLat)
             .setHTML(description)
             .addTo(map);
         });
          
         // Change the cursor to a pointer when the mouse is over the places layer.
         map.on('mouseenter', 'bridges', () => {
-        map.getCanvas().style.cursor = 'pointer';
+            map.getCanvas().style.cursor = 'pointer';
         });
          
         // Change it back to a pointer when it leaves.
         map.on('mouseleave', 'bridges', () => {
-        map.getCanvas().style.cursor = '';
+            map.getCanvas().style.cursor = '';
         });
 })
