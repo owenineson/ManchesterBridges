@@ -19,35 +19,41 @@ map.on('load', () => {
         'source': 'bridges',
         'paint': {
             'line-color': '#FF0000',
-            'line-width': 4
+            'line-width': 4,
+        },
+        'layout': {
+            'line-cap': 'round',
         },
     });
 
     map.on('click', 'bridges', (e) => {
         // Copy coordinates array.
         const coordinates = e.features[0].geometry.coordinates.slice();
-        const description = JSON.stringify(e.features[0].properties);
-         
+        const description = JSON.stringify(e.features[0].properties, space='\n');    
+            
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
         // over the copy being pointed to.
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
-         
+            
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
             .setHTML(description)
             .addTo(map);
-        });
-         
-        // Change the cursor to a pointer when the mouse is over the places layer.
-        map.on('mouseenter', 'bridges', () => {
-            map.getCanvas().style.cursor = 'pointer';
-        });
-         
-        // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'bridges', () => {
-            map.getCanvas().style.cursor = '';
-        });
+    });
+            
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'bridges', () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+        
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'bridges', () => {
+        map.getCanvas().style.cursor = '';
+    });
+
+    map.addControl(new mapboxgl.GeolocateControl());
+    map.addControl(new mapboxgl.NavigationControl());
 })
