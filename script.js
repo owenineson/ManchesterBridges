@@ -8,9 +8,16 @@ const map = new mapboxgl.Map({
 });
 
 map.on('load', () => {
+    
+    // controls...
+    map.addControl(new mapboxgl.GeolocateControl());
+    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new mapboxgl.ScaleControl());
+    
+    // add some bridges
     map.addSource('bridges', {
         type: 'geojson',
-        data: 'https://owenineson.github.io/ManchesterBridges/bridges.geojson',
+        data: 'https://nutshellsatirical.s3.eu-north-1.amazonaws.com/bridges.geojson',
     });
 
     map.addLayer({
@@ -26,10 +33,11 @@ map.on('load', () => {
         },
     });
 
+    // logic for bridge clicking
     map.on('click', 'bridges', (e) => {
         // Copy coordinates array.
         const coordinates = e.features[0].geometry.coordinates.slice();
-        const description = JSON.stringify(e.features[0].properties, space='\n');    
+        const description = JSON.stringify(e.features[0].properties).replace(/([{}"])/g, '').replace(/[,]/g, '\n'); 
             
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
@@ -40,7 +48,7 @@ map.on('load', () => {
             
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
-            .setHTML(description)
+            .setText(description)
             .addTo(map);
     });
             
@@ -54,6 +62,6 @@ map.on('load', () => {
         map.getCanvas().style.cursor = '';
     });
 
-    map.addControl(new mapboxgl.GeolocateControl());
-    map.addControl(new mapboxgl.NavigationControl());
+    
+        
 })
